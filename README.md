@@ -9,3 +9,6 @@ UK car accident
 5. Most important causes of the accidents
 6. Create a predictive model to evaluate the probability of car accidents
 7. Create dashboard
+
+This is a kaggle challenge for car accident rate in UK
+https://www.kaggle.com/daveianhickey/2000-16-traffic-flow-england-scotland-wales
