@@ -31,11 +31,11 @@ accident_files = ['accidents_2005_to_2007.csv','accidents_2009_to_2011.csv', 'ac
 car_list = []
 for file in accident_files:
     file_fullname = dir_car + '/' + file
-    car_one = pd.read_csv(file_fullname, index_col=None, header=0)
+    car_one = pd.read_csv(file_fullname, index_col=None)
     car_list.append(car_one)
 
 car_total = pd.concat(car_list, axis=0, ignore_index=True)
-
+car_total.to_csv('accidents_2005_to_2014.csv')
 
 # 1. Identify the areas with the most accidents.
 # visualize accidents in the map
@@ -59,7 +59,7 @@ plot_roads(car_total)
 
 
 # 3. Accidents across different seasons
-a = pd.to_datetime(car_total['Date'])
+a = pd.to_datetime(car_total['Date'], dayfirst = True)
 car_total['Month'] = a.dt.strftime('%m').astype(str)
 car_total['Year'] = a.dt.strftime('%Y').astype(str)
 
@@ -69,6 +69,7 @@ def plot_by_month(car_total):
     car_month = car_total['Month'].value_counts().sort_index()
     n_month = len(car_month)
     plt.bar(np.arange(n_month), car_month)
+    plt.xticks(np.arange(n_month),car_month.index)
     plt.show()
 
 plot_by_month(car_total)
@@ -116,8 +117,6 @@ def pie_chart_weather(car_total):
 pie_chart_weather(car_total)
 
 
-# road conditions
-# car_conditions = []
 
 def plot_road_conds(car_total):
     road_conds = car_total['Road_Surface_Conditions'].value_counts().index
@@ -128,8 +127,7 @@ def plot_road_conds(car_total):
 plot_road_conds(car_total)
 
 
-# 6. Create a predictive model to evaluate the probability of car accidents car_total['Accident_Severity'].value_counts()
-car_total['Number_of_Casualties'].value_counts()
+# 6. Create a predictive model to evaluate the probability of car accidents
 # accident by each hour
 def car_time(car_total):
     n_hours = 24
@@ -139,8 +137,5 @@ def car_time(car_total):
 
 pd_hour = pd.to_datetime(car_total['Time'], format = '%H:%M').dt.hour
 car_time = pd_hour.value_counts().sort_index()
-car_time.plot(kind='line')
-
-
-car_month = car_total['Month'].value_counts().sort_index()
-car_month.plot(kind='bar')
+# car_time.plot(kind='line')
+plt.plot(car_time, '.--')
